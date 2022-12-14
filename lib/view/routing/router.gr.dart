@@ -13,7 +13,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i4;
 import 'package:flutter/material.dart' as _i5;
-import 'package:projet/models/card_hs.dart' as _i6;
+import 'package:projet/data/models/card_hs.dart' as _i6;
 import 'package:projet/view/cardhs_detail_page.dart' as _i2;
 import 'package:projet/view/favorite_page.dart' as _i3;
 import 'package:projet/view/home_page.dart' as _i1;

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "28133017720",
+    "project_id": "projeths-tm",
+    "storage_bucket": "projeths-tm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28133017720:android:bed312f82d810aae37c58d",
+        "android_client_info": {
+          "package_name": "helle.thitouane.projet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28133017720-io68di9disl3adjunbfktch7c6gm8h5t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFLBoPdQvUnTcxprAYBfC_OpXyVwqyvN0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28133017720-io68di9disl3adjunbfktch7c6gm8h5t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "28133017720-rlua2oj49op5provh6feqgcgosmj7pnq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.helle.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

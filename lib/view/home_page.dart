@@ -1,106 +1,66 @@
+import 'dart:io' show Platform, exit;
+
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:projet/data/cubit/card_hs_cubit.dart';
-import 'package:projet/view/hearthstone_card_widget.dart';
-import 'package:projet/view/search_card_widget.dart';
+import 'package:projet/data/cubit/card/card_hs_cubit.dart';
+import 'package:projet/view/widget/hearthstone_card_widget.dart';
+import 'package:projet/view/widget/search_card_widget.dart';
+
+import 'package:projet/data/cubit/info/info_cubit.dart';
 
 class HomePage extends StatelessWidget {
   final String? set;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   HomePage({super.key, this.set});
 
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  //get from info
-  static const List<String> dropdownList = <String>[
-    "Classic",
-    "Basic",
-    "Hall of Fame",
-    "Missions",
-    "Demo",
-    "System",
-    "Slush",
-    "Promo",
-    "Naxxramas",
-    "Goblins vs Gnomes",
-    "Blackrock Mountain",
-    "The Grand Tournament",
-    "Credits",
-    "Hero Skins",
-    "Tavern Brawl",
-    "The League of Explorers",
-    "Whispers of the Old Gods",
-    "Whispers of the Old Gods",
-    "One Night in Karazhan",
-    "One Night in Karazhan",
-    "Mean Streets of Gadgetzan",
-    "Mean Streets of Gadgetzan",
-    "Journey to Un'Goro",
-    "Knights of the Frozen Throne",
-    "Kobolds & Catacombs",
-    "The Witchwood",
-    "The Boomsday Project",
-    "Rastakhan's Rumble",
-    "Rise of Shadows",
-    "Taverns of Time",
-    "Saviors of Uldum",
-    "Descent of Dragons",
-    "Galakrond's Awakening",
-    "Ashes of Outland",
-    "Wild Event",
-    "Scholomance Academy",
-    "Battlegrounds",
-    "Demon Hunter Initiate",
-    "Madness at the Darkmoon Faire",
-    "Forged in the Barrens",
-    "Legacy",
-    "Core",
-    "Classic",
-    "Wailing Caverns",
-    "United in Stormwind",
-    "Mercenaries",
-    "Fractured in Alterac Valley",
-    "Voyage to the Sunken City",
-    "Unknown",
-    "Murder at Castle Nathria",
-    "March of the Lich King"
-  ];
-
-  String dropdownValue = dropdownList.first;
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CardHSCubit()..getFromSet(),
-      child: BlocBuilder<CardHSCubit, CardHSState>(
-        builder: (context, state) {
-          return Scaffold(
-            key: _scaffoldKey,
-            drawer: NavBar(context),
-            appBar: AppBar(
-              title: const Text('Hearthstone search'),
-              centerTitle: true,
-              leading: IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    showSearch(
-                        context: context,
-                        delegate: SearchCard()
-                    );
-                  },
-                )
-              ],
-              bottom: PreferredSize(
-                  preferredSize: const Size(3, 50),
-                  child: Container(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => CardHSCubit()..getFromSet(),
+        ),
+        BlocProvider(
+          create: (context) => InfoCubit()..getSets(),
+        ),
+      ],
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: _navBar(context),
+        appBar: AppBar(
+          backgroundColor: Colors.brown,
+          title: const Text('Hearthstone search'),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                    context: context,
+                    delegate: SearchCard()
+                );
+              },
+            )
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size(3, 50),
+            child: BlocBuilder<InfoCubit, InfoState>(
+              builder: (context, state) {
+                List<dynamic> setList = [];
+                if (state is InfoLoaded) {
+                  setList = state.sets;
+                  return Container(
                     height: 50,
                     color: Colors.white.withOpacity(0.7),
                     child: SingleChildScrollView(
@@ -108,33 +68,52 @@ class HomePage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          for (var set in dropdownList) _singleItem(context, set)
+                          for (var set in setList) _singleItem(context, set)
                         ],
                       ),
                     ),
-                  )
-              ),
-            ),
-            body: _getBody(context, state),
-          );
-        }
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }
+            )
+          ),
+        ),
+        body: BlocBuilder<CardHSCubit, CardHSState>(
+          builder: (context, state) {
+            return _getBody(context, state);
+          }
+        )
       )
     );
   }
 
   Widget _getBody(BuildContext context, CardHSState state) {
     if (state is CardHSLoaded) {
-      return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3
-        ),
-        itemCount: state.cards.length,
-        itemBuilder: (context, index) {
-          return HearthstoneCardWidget(
-              card: state.cards[index]
-          );
-        }
-      );
+      if (state.cards.isEmpty) {
+        return const Center(
+          child: Text("empty set"),
+        );
+      } else {
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                ),
+                itemCount: state.cards.length,
+                itemBuilder: (context, index) {
+                  return HearthstoneCardWidget(
+                      card: state.cards[index]
+                  );
+                }
+            );
+          },
+        );
+      }
     } else {
       return const Center(
         child: CircularProgressIndicator(),
@@ -153,13 +132,12 @@ class HomePage extends StatelessWidget {
         foregroundColor: Colors.brown,
       ),
       child: Text(
-          searchItem,
-          style: const TextStyle(color: Colors.white),
+          searchItem
         ),
     );
   }
 
-  Widget NavBar(BuildContext context) {
+  Widget _navBar(BuildContext context) {
     return Drawer(
       child: Container(
         padding: EdgeInsets.zero,
@@ -202,11 +180,56 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     ListTile(
+                      leading: const Icon(Icons.dark_mode),
+                      title: const Text('Dark Mode'),
+                      onTap: () {
+                        AdaptiveTheme.of(context).toggleThemeMode();
+                      }
+                    ),
+                    ListTile(
                       leading: const Icon(Icons.logout),
                       title: const Text('Quit'),
                       onTap: () {
-                        AutoRouter.of(context).pop();
-                      },
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                title: const Text(
+                                  kIsWeb
+                                    ? 'Close with the red cross in the top corner'
+                                    : 'Are you sure ?'
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            if (Platform.isAndroid) {
+                                              SystemNavigator.pop();
+                                            } else if (Platform.isIOS) {
+                                              exit(0);
+                                            }
+                                          },
+                                          child: const Text('Yes'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('No'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                            );
+                          }
+                        );
+                    }
                     ),
                   ],
                 ),
