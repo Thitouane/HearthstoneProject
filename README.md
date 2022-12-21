@@ -18,19 +18,7 @@ Le bouton mode sombre, change le thème de l'application en sombre.
 
 Le bouton quitter, nous fais quitter l'application.
 
-## Fonctionnalités
-- Interactions avec une API : OK
-- Architecture MVVM/BLoC : OK
-- Absence de bug : OK
-- Prise en compte des contraintes mobiles : OK
-   + Accès intenet ou non
-   + Orientation du téléphone
-   + Mode sombre
-- Utilisation des capteurs/feedback : OK
-   + Vibreur
-   + Notifications
-
-# Rapport : TODO
+# Fonctionnalités
 - Choix des packages
   + bloc:
 Le package BLoC était imposé, j'ai donc appris à l'utiliser dans mes interactions avec Firebase et mon api, dans mon code les interactions avec les données sont séparés des Widget comme le veut l'architecture BLoC.
