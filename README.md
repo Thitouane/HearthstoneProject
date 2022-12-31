@@ -1,6 +1,6 @@
 # Projet de TM
 ## Pour lancer le projet
-Pour tester le code (version qui fonctionne):
+**Pour tester le code (version qui affiche les images à cause des erreurs CORS):**
 `flutter run -d chrome --no-sound-null-safety --web-renderer=html`
 
 Pour build l'apk, branchez votre telephone puis:
