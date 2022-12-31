@@ -4,11 +4,12 @@ Pour tester le code (version qui fonctionne):
 `flutter run -d chrome --no-sound-null-safety --web-renderer=html`
 
 Pour build l'apk, branchez votre telephone puis:
-`
+
+```
 flutter build appbundle 
-flutter install
 flutter build apk --split-per-abi
-`
+flutter install
+```
 
 ## Présentation
 Dans le cadre du cours de **Technologie Mobile**, j'ai développé une petite **application mobile** en **Flutter**.
