@@ -1,14 +1,18 @@
 # Projet de TM
 ## Pour lancer le projet
+Pour tester le code (version qui fonctionne):
 `flutter run -d chrome --no-sound-null-safety --web-renderer=html`
+
+Pour build l'apk, branchez votre telephone puis:
+`flutter install`
 
 ## Présentation
 Dans le cadre du cours de **Technologie Mobile**, j'ai développé une petite **application mobile** en **Flutter**.
-Cette application communique avec l'**API Hearthstone** et stock ses données (favoris) dans une base de donnée **Firebase**.
+Cette application communique avec l'**API Hearthstone** et stocke ses données (favoris) dans une base de données **Firebase**.
 
-Quand on démarre l'application, on arrive sur la page d'acceuil, on y trouve une liste de carte Hearthstone interactive, lorsque l'on clique dessus ça ouvre une page du détail de la carte, avec une barre d'outils qui regroupe un bouton vers le menu, un bouton vers la recherche de carte et un menu de choix du set de carte que l'on veut afficher dans la liste de carte.
+Quand on démarre l'application, on arrive sur la page d'accueil, on y trouve une liste de cartes Hearthstone interactives, lorsque l'on clique dessus ça ouvre une page du détail de la carte, avec une barre d'outils qui regroupe un bouton vers le menu, un bouton vers la recherche de carte et un menu de choix du set de carte que l'on veut afficher dans la liste de carte.
 
-Dans le détail d'une carte, nous avons des informations sur la carte et la possibilité de la mettre en favoris grave à un bouton sur l'image de la carte, la mise en favoris déclenchera une vibration et une notification, une fois mis en favoris, le bouton changera et deviendra un bouton de suppression de la carte dans les favoris, ce qui déclenchera aussi une vibration et une notification, la barre d'outil nous propose de revenir en arrière.
+Dans le détail d'une carte, nous avons des informations sur la carte et la possibilité de la mettre en favorie grâce à un bouton sur l'image de la carte, la mise en favoris déclenchera une vibration et une notification, une fois mis en favoris, le bouton changera et deviendra un bouton de suppression de la carte dans les favoris, ce qui déclenchera aussi une vibration et une notification, la barre d'outil nous propose de revenir en arrière.
 
 Dans le menu nous avons le choix entre le retour à l'accueil, la recherche d'une carte, la liste des favoris, le mode sombre et quitter l'application.
 
