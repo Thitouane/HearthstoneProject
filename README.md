@@ -11,7 +11,7 @@ flutter install
 ```
 
 ## Présentation
-Dans le cadre du cours de **Technologie Mobile**, j'ai développé une petite **application mobile** en **Flutter**.
+J'ai développé une petite **application mobile** en **Flutter**.
 Cette application communique avec l'**API Hearthstone** et stocke ses données (favoris) dans une base de données **Firebase**.
 
 Quand on démarre l'application, on arrive sur la page d'accueil, on y trouve une liste de cartes Hearthstone interactives, lorsque l'on clique dessus ça ouvre une page du détail de la carte, avec une barre d'outils qui regroupe un bouton vers le menu, un bouton vers la recherche de carte et un menu de choix du set de carte que l'on veut afficher dans la liste de carte.
